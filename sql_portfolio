@@ -1,0 +1,120 @@
+/* Return a list of all associate and entry level roles located in the US locations (no specific state).
+
+What's Needed:
+- Associate and entry level
+- Roles
+- Located in the US (no specific state)*/
+
+select
+title,
+location,
+Seniority_level
+from linkedin_data_analyst
+where location = 'us' and seniority_level in ('entry level','associate')
+
+
+
+/*Return a list of all software engineer survey responders with at least a college education who are in Management roles in Level 2 and 3 seniority roles.
+
+What's Needed:
+- Software engineers
+- At least college educated
+- Management
+- Level 2 and 3 seniority roles*/
+
+
+select 
+empsurvID,
+jobtitle,
+Education,
+dept,
+Seniority
+from glassdoor_survey_roles
+where jobtitle ='software engineer' and education != 'high school' and dept = 'management' and seniority between 2 and 3
+
+
+/*Return a list of all college educated survey responders for workers that are between 25 to 35. Sort by age from youngest to oldest.
+
+What's Needed:
+- College educated 
+- Survey responders
+- Between 25 to 35
+- Sort by age from yougest to oldest*/
+
+select empsurvid,
+education,
+age
+from glassdoor_survey_roles
+where education !='high school' and age between 25 and 35
+order by age asc
+
+/*Return a list of all data analyst roles that are open at Samsung along with their start and end pay range.
+
+What's Needed:
+- List of all DA roles
+- Samsung
+- Start pay
+- End pay*/
+
+select 
+title,
+company,
+start_range,
+end_range
+from linkedin_data_analyst
+where company = 'samsung sds'
+
+/*Return all full time, salaried IT industry data analyst roles in the tri state area: NY, NJ, and CT for roles that are at least $75,000. Sort by the starting pay from smallest to largest.
+
+What's Needed:
+- Full time
+- Salaried
+- IT industry
+- Roles
+- NY, NJ, or CT
+- Starting pay of at least $75K
+- Sort by the starting pay from smallest to largest*/
+
+select 
+title,
+description,
+salary,
+industries,
+location,
+start_range
+from linkedin_data_analyst
+where description = 'full-time' and salary = 'y' and industries like '%it %' and start_range >= 75000 and location like '%, ny%' or (location like '%, nj%' or location like '%, ct%')
+
+/*Return a list of all companies hiring for data analyst roles on LinkedIn. Sort by the company name in any order of your choice.*/
+
+
+select count(distinct company) as 'company_count'
+from linkedin_data_analyst
+order by company ASC
+
+
+
+/*Return a list of all industries hiring for data analyst roles on LinkedIn. Sort by the industry in any order of your choice.*/
+
+select count(DISTINCT industries) as 'industry_count'
+from linkedin_data_analyst
+order by industries ASC
+
+
+/*Return the average starting salary for salaried roles that are located in GA, SC, or NC.
+
+What's Needed:
+- Average starting SALARY
+- Location GA, SC, NC*/
+
+
+select avg(start_range) as 'Avg_Start_Pay'
+from linkedin_data_analyst
+where salary = 'y' and (location like '%, ga%' or location like '%, nc%' or location like '%, sc%')
+
+/*Return the lowest starting pay hourly rate for hourly roles.*/
+
+select max(start_range) as 'High_Start_Pay'
+from linkedin_data_analyst
+where hourly = 'y' and industries like '%it %'
+
